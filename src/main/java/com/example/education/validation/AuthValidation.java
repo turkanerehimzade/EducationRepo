@@ -17,9 +17,7 @@ public class AuthValidation {
 
     public void validateChangePassword(ChangePasswordRequest changePasswordRequest) {
         List<String> messages = new ArrayList<>();
-        if (changePasswordRequest.getOldPassword().equals(changePasswordRequest.getNewPassword())) {
-            messages.add("Old password does not match");
-        } else if (changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
+        if (changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
             messages.add("New password does not match");
         }else if (changePasswordRequest.getNewPassword().isBlank()) {
             messages.add("Password can not be empty");

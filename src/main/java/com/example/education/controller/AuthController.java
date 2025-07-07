@@ -23,7 +23,6 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> logout(@RequestHeader("Authorization")String accessToken){
         return authenticationService.logout(accessToken.substring(7));
-
     }
     @PostMapping("/refresh-token")
     public ResponseEntity<UserLoginResponse> refreshToken( HttpServletRequest authorizationHeader){
