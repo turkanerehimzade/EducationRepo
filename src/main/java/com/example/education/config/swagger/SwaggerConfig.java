@@ -1,4 +1,4 @@
-package com.example.education.config;
+package com.example.education.config.swagger;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;

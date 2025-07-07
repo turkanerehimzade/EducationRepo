@@ -1,5 +1,6 @@
 package com.example.education.dto.request.interview;
 
+import com.example.education.enums.Level;
 import lombok.*;
 
 @Getter
@@ -11,6 +12,5 @@ import lombok.*;
 public class InterviewRequest {
     private String question;
     private String answer;
-    private String category;
-    private String degree;
+    private Level level;
 }
