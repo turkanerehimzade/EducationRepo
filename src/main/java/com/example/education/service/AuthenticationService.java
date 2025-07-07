@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -31,6 +33,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private  final JwtProvider jwtProvider;
     private final AuthTokenService authTokenService;
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
     public AuthenticationService(AuthenticationManager authenticationManager, JwtProvider jwtProvider, AuthTokenService authTokenService, AuthValidation authValidation, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
@@ -43,8 +47,6 @@ public class AuthenticationService {
     private UserLoginResponse getLoginResponse(UserPrincipal userPrincipal) {
         String accessToken = jwtProvider.generateToken(userPrincipal, JWT_ACCESS_EXPIRATION_IN_MS);
         String refreshToken=jwtProvider.generateToken(userPrincipal, JWT_REFRESH_EXPIRATION_IN_MS);
-        System.out.println(accessToken);
-        System.out.println(refreshToken);
         authTokenService.saveTokenInfo(userPrincipal,accessToken,refreshToken);
         return new UserLoginResponse().setAccessToken(accessToken).setRefreshToken(refreshToken);
     }
@@ -58,7 +60,6 @@ public class AuthenticationService {
     public ResponseEntity<Object> logout(String accessToken) {
         authTokenService.deactiveAccessToken(accessToken);
         return ResponseEntity.ok(null);
-
     }
     public ResponseEntity<UserLoginResponse> refreshToken(HttpServletRequest authorizationHeader){
 
@@ -69,8 +70,9 @@ public class AuthenticationService {
     public ResponseEntity<String> changePassword(ChangePasswordRequest changePasswordRequest){
         authValidation.validateChangePassword(changePasswordRequest);
         User user=userRepository.findByEmail(changePasswordRequest.getEmail()).orElse(null);
-        if(user.getPassword().equals(changePasswordRequest.getNewPassword())){
-            user.setPassword(changePasswordRequest.getNewPassword());
+        if(!user.getPassword().equals(changePasswordRequest.getNewPassword())){
+            String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
+            user.setPassword(encodedPassword);
             userRepository.save(user);
             return ResponseEntity.ok("Password changed");
         }

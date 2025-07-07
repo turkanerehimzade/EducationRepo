@@ -89,7 +89,6 @@ public class JwtProvider {
             return bearerToken.substring(7);
         }
         return null;
-
     }
 
     public Authentication getAuthentication(HttpServletRequest request) {

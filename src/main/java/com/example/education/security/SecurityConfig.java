@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 
 @Configuration
@@ -25,6 +26,8 @@ public class SecurityConfig {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final JWTAuthenticationEntryPoint authenticationEntryPoint;
     private final JWTAccessDeniedHandler accessDeniedHandler;
+    private final CorsConfigurationSource corsConfigurationSource;
+
 
 
     @Bean
@@ -46,7 +49,8 @@ public class SecurityConfig {
     private static final String[] ADMIN_WHITELIST = {
             "/v1/material/**",
             "/v1/question/**",
-            "/v1/admin/***"
+            "/v1/admin/**",
+            "/v1/interview/**"
     };
     private static final String[] COURSE_ADMIN_WHITELIST = {
             "/v1/admin-course/**",
@@ -78,6 +82,7 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex
                         .accessDeniedHandler(accessDeniedHandler)
                         .authenticationEntryPoint(authenticationEntryPoint))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .build();
     }
 

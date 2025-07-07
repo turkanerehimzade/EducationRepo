@@ -1,7 +1,10 @@
 package com.example.education.dao.entity.interview;
 
 import com.example.education.dao.entity.BaseEntity;
+import com.example.education.enums.Level;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -17,6 +20,6 @@ import lombok.experimental.SuperBuilder;
 public class Interview extends BaseEntity {
     private String question;
     private String answer;
-    private String category;
-    private String degree;
+    @Enumerated(EnumType.STRING)
+    private Level level;
 }
