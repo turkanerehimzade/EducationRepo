@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @ToString
-@Table(name = "auth_token", schema = "test")
+@Table(name = "auth_token")
 public class AuthToken extends BaseEntity {
 
     @Column(name = "access_token")
